@@ -18,5 +18,5 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
-    compile files('/home/jakubs/Studia/PSI/Fuzzy Logic/jFuzzyLogic_1_2_1.jar')
+    compile files('/home/jakubs/Studia/PSI/Fuzzy Logic/jFuzzyLogic.jar')
 }

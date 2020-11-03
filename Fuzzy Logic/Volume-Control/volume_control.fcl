@@ -1,0 +1,55 @@
+FUNCTION_BLOCK volume_control
+
+VAR_INPUT
+    volumeLevel : REAL;
+    dayTime : REAL;
+END_VAR
+
+VAR_OUTPUT
+    volumeChange : REAL;
+END_VAR
+
+FUZZIFY volumeLevel
+    TERM veryQuiet := (0, 1) (10, 1) (20, 0.50) (30, 0);
+    TERM quiet := (10, 0) (20, 0.50) (30, 1) (40, 1) (50, 0.50) (60, 0);
+    TERM loud := (40, 0) (50, 0.50) (60, 1) (70, 1) (80, 0.50) (90, 0);
+    TERM veryLoud := (70, 0) (80, 0.50) (90, 1) (100, 1);
+END_FUZZIFY
+
+FUZZIFY dayTime
+    TERM morning := (1, 0) (3, 0.50) (5, 1) (7, 1) (9, 0.50) (11, 0);
+    TERM noon := (7, 0) (9, 0.50) (11, 1) (13, 1) (15, 0.50) (17, 0);
+    TERM evening := (13, 0) (15, 0.50) (17, 1) (19, 1) (21, 0.50) (23, 0);
+    TERM night := (0,1) (1, 1) (3, 0.50) (5, 0) (19, 0) (21, 0.50) (23, 1);
+END_FUZZIFY
+
+DEFUZZIFY volumeChange
+    TERM turnDown := (0, 1) (2, 1) (3, 0.50) (4, 0) (7, 0);
+    TERM ok := (2, 0) (3, 0.50) (4, 1) (6, 1) (7, 0.50) (8, 0);
+    TERM turnUp := (3, 0) (6, 0) (7, 0.50) (8, 1) (10, 1);
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK No1
+    AND: MIN;
+    ACT: MIN;
+    RULE 0: IF volumeLevel IS veryQuiet AND dayTime IS morning THEN volumeChange IS turnUp;
+    RULE 1: IF volumeLevel IS quiet AND dayTime IS morning THEN volumeChange IS ok;
+    RULE 2: IF volumeLevel IS loud AND dayTime IS morning THEN volumeChange IS ok;
+    RULE 3: IF volumeLevel IS veryLoud AND dayTime IS morning THEN volumeChange IS turnDown;
+    RULE 4: IF volumeLevel IS veryQuiet AND dayTime IS noon THEN volumeChange IS turnUp;
+    RULE 5: IF volumeLevel IS quiet AND dayTime IS noon THEN volumeChange IS turnUp;
+    RULE 6: IF volumeLevel IS loud AND dayTime IS noon THEN volumeChange IS ok;
+    RULE 7: IF volumeLevel IS veryLoud AND dayTime IS noon THEN volumeChange IS turnDown;
+    RULE 8: IF volumeLevel IS veryQuiet AND dayTime IS evening THEN volumeChange IS turnUp;
+    RULE 9: IF volumeLevel IS quiet AND dayTime IS evening THEN volumeChange IS ok;
+    RULE 10: IF volumeLevel IS loud AND dayTime IS evening THEN volumeChange IS turnDown;
+    RULE 11: IF volumeLevel IS veryLoud AND dayTime IS evening THEN volumeChange IS turnDown;
+    RULE 12: IF volumeLevel IS veryQuiet AND dayTime IS night THEN volumeChange IS ok;
+    RULE 13: IF volumeLevel IS quiet AND dayTime IS night THEN volumeChange IS ok;
+    RULE 14: IF volumeLevel IS loud AND dayTime IS night THEN volumeChange IS turnDown;
+    RULE 15: IF volumeLevel IS veryLoud AND dayTime IS night THEN volumeChange IS turnDown;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
