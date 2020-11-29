@@ -11,29 +11,29 @@ VAR_OUTPUT
 END_VAR
 
 FUZZIFY timeToDeadline
-    TERM almostNoTime := (0, 1) (1, 1) (2, 0.50) (3, 0);
+    TERM almostNoTime := (1, 1) (2, 0.50) (3, 0);
     TERM someTime := (1, 0) (2, 0.50) (3, 1) (4, 1) (5, 0.50) (6, 0);
     TERM plentyOfTime := (4, 0) (5, 0.50) (6, 1) (14, 1);
 END_FUZZIFY
 
-FUZZYIFY difficultyLevel
-    TERM easy :=  (0, 1) (1, 1) (2, 0.50) (3, 0);
+FUZZIFY difficultyLevel
+    TERM easy :=  (1, 1) (1.5, 0.50) (2, 0);
     TERM moderate := (1, 0) (1.5, 0.50) (2, 1) (2.5, 0.50) (3, 0);
     TERM hard := (2, 0) (2.5, 0.50) (3, 1);
 END_FUZZIFY
 
-FUZZYIFY timeConsumption
-    TERM fast := (0, 1) (1, 1) (2, 0.50) (3, 0);
+FUZZIFY timeConsumption
+    TERM fast := (1, 1) (1.5, 0.50) (2, 0);
     TERM takesAWhile := (1, 0) (1.5, 0.50) (2, 1) (2.5, 0.50) (3, 0);
     TERM timeDevourer := (2, 0) (2.5, 0.50) (3, 1);
 END_FUZZIFY
 
 DEFUZZIFY urgencyLevel
-    TERM leaveItOver := (0, 1) (1, 1) (2, 0.50) (3, 0);
-    TERM worthConsidering := (1, 0) (1.5, 0.50) (1, 1) (2.5, 0.50) (3, 0);
+    TERM leaveItOver := (1, 1) (1.5, 0.50) (2, 0);
+    TERM worthConsidering := (1, 0) (1.5, 0.50) (2, 1) (2.5, 0.50) (3, 0);
     TERM urgent := (2, 0) (2.5, 0.50) (3, 1);
     METHOD : COG;
-    DEFAULT := 1
+    DEFAULT := 1;
 END_DEFUZZIFY
 
 RULEBLOCK No_1
@@ -41,42 +41,20 @@ RULEBLOCK No_1
     OR : MAX;
     ACT : MIN;
 
-    RULE 1 : (timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR () THEN urgencyLevel IS worthConsidering
-    RULE 2 : timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS fast
-    RULE 3 : timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS fast
-
-    RULE 4 : timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS fast
-    RULE 5 : timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS fast
-    RULE 6 : timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS fast
-
-    RULE 7 : timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS fast
-    RULE 8 : timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS fast
-    RULE 9 : timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS fast
-
-    RULE 10 : timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile
-    RULE 11 : timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile
-    RULE 12 : timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile
-
-    RULE 13 : timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile
-    RULE 14 : timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile
-    RULE 15 : timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile
-
-    RULE 16 : timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile
-    RULE 17 : timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile
-    RULE 18 : timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile
-
-    RULE 19 : timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer
-    RULE 20 : timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer
-    RULE 21 : timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer
-
-    RULE 22 : timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer
-    RULE 23 : timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer
-    RULE 24 : timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer
-
-    RULE 25 : timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer
-    RULE 26 : timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer
-    RULE 27 : timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer
-
+    RULE 0 : IF (timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR (timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS fast) THEN urgencyLevel IS worthConsidering;
+    RULE 1 : IF (timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS fast) THEN urgencyLevel IS leaveItOver;
+    RULE 2 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile) THEN urgencyLevel IS leaveItOver;
+    RULE 3 : IF (timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS fast) OR (timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS fast) THEN urgencyLevel IS urgent;
+    RULE 4 : IF (timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS fast) OR (timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile) THEN urgencyLevel IS worthConsidering;
+    RULE 5 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS fast) OR (timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile) THEN urgencyLevel IS leaveItOver;
+    RULE 6 : IF (timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile) OR (timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile) THEN urgencyLevel IS urgent;
+    RULE 7 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile) THEN urgencyLevel IS leaveItOver;
+    RULE 8 : IF (timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile) OR (timeToDeadline IS almostNoTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer) THEN urgencyLevel IS urgent;
+    RULE 9 : IF (timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile) OR (timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer) THEN urgencyLevel IS worthConsidering;
+    RULE 10 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer) THEN urgencyLevel IS leaveItOver;
+    RULE 11 : IF (timeToDeadline IS almostNoTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer) OR (timeToDeadline IS almostNoTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer) THEN urgencyLevel IS urgent;
+    RULE 12 : IF timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer THEN urgencyLevel IS worthConsidering;
+    RULE 13 : IF (timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS hard AND timeConsumption IS timeDevourer) THEN urgencyLevel IS urgent;
 
 END_RULEBLOCK
 

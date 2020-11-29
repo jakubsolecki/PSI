@@ -1,4 +1,4 @@
-package java.pl.jakubsolecki.PSIFuzzyController;
+package main;
 
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
@@ -10,8 +10,9 @@ public class FuzzyController {
     public static void main(String[] args) {
         try {
             String fileName = args[0];
-            int volumeLevel = Integer.parseInt(args[1]);
-            int dayTime = Integer.parseInt(args[2]);
+            int timeToDeadline = Integer.parseInt(args[1]);
+            int difficultyLevel = Integer.parseInt(args[2]);
+            int timeConsumption = Integer.parseInt(args[3]);
 
             FIS fis = FIS.load(fileName, true);
 
@@ -25,40 +26,25 @@ public class FuzzyController {
             FunctionBlock functionBlock = fis.getFunctionBlock(null);
             JFuzzyChart.get().chart(functionBlock);
 
-            fis.setVariable("volumeLevel", volumeLevel);
-            fis.setVariable("dayTime", dayTime);
+            fis.setVariable("timeToDeadline", timeToDeadline);
+            fis.setVariable("difficultyLevel", difficultyLevel);
+            fis.setVariable("timeConsumption", timeConsumption);
 
             fis.evaluate();
 
-            Variable v = functionBlock.getVariable("volumeChange");
+            Variable v = functionBlock.getVariable("urgencyLevel");
             JFuzzyChart.get().chart(v, v.getDefuzzifier(), true);
 
             System.out.println(fis);
 
-            /* for older version (jFuzzyLogic_1_2_1.jar) */
-/*
-            FuzzyRuleSet fuzzyRuleSet = fis.getFuzzyRuleSet();
-            fuzzyRuleSet.chart();
-
-            fuzzyRuleSet.setVariable("volumeLevel", volumeLevel);
-            fuzzyRuleSet.setVariable("dayTime", dayTime);
-
-            fuzzyRuleSet.evaluate();
-
-            fuzzyRuleSet.getVariable("volumeChange").chartDefuzzifier(true);
-
-            System.out.println(fuzzyRuleSet);
-*/
-
-
 
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.out.println("Incorrect number of parameters. Eg.: " +
-                    "java Volume-Control string<file_fcl> int<intensity lvl> int<day time>");
+                    "java Can_I_Do_It_Tomorrow string<file_fcl> int<time to deadline> int<difficulty level> int<time consumption>");
             System.out.println(ex.getMessage());
         } catch (NumberFormatException ex) {
             System.out.println("Incorrect parameter. Eg.: " +
-                    "java Volume-Control string<file_fcl> int<intensity lvl> int<day time>");
+                    "java Can_I_Do_It_Tomorrow string<file_fcl> int<time to deadline> int<difficulty level> int<time consumption>");
             System.out.println(ex.getMessage());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
