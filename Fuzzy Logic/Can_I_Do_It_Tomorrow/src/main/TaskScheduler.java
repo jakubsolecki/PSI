@@ -5,14 +5,14 @@ import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.plot.JFuzzyChart;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
-public class FuzzyController {
+public class TaskScheduler {
 
     public static void main(String[] args) {
         try {
             String fileName = args[0];
-            int timeToDeadline = Integer.parseInt(args[1]);
-            int difficultyLevel = Integer.parseInt(args[2]);
-            int timeConsumption = Integer.parseInt(args[3]);
+            double timeToDeadline = Double.parseDouble(args[1]);
+            double difficultyLevel = Double.parseDouble(args[2]);
+            double timeConsumption = Double.parseDouble(args[3]);
 
             FIS fis = FIS.load(fileName, true);
 
