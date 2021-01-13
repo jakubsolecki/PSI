@@ -1,0 +1,56 @@
+FUNCTION_BLOCK fuzzy_controller
+
+VAR_INPUT
+    timeToDeadline : REAL;
+    difficultyLevel : REAL;
+    timeConsumption : REAL;
+END_VAR
+
+VAR_OUTPUT
+    urgencyLevel : REAL;
+END_VAR
+
+FUZZIFY timeToDeadline
+    TERM almostNoTime := (0, 1) (0.5, 1) (1, 0.50) (2.5, 0) (4, 0);
+    TERM someTime := (0, 0) (1, 0) (2, 0.50) (3, 1) (4, 1) (5, 0.50) (6, 0);
+    TERM plentyOfTime := (4, 0) (5, 0.50) (6, 1) (14, 1);
+END_FUZZIFY
+
+FUZZIFY difficultyLevel
+    TERM easy :=  (0, 1) (0.5, 0.5) (1, 0) (2, 0);
+    TERM moderate := (0, 0) (0.5, 0.50) (1, 1) (1.5, 0.50) (2, 0);
+    TERM hard := (1, 0) (1.5, 0.50) (2, 1);
+END_FUZZIFY
+
+FUZZIFY timeConsumption
+    TERM fast := (0, 1) (1, 1) (1.5, 0.50) (2, 0) (3, 0);
+    TERM takesAWhile := (1, 0) (1.5, 0.50) (2, 1) (3, 1) (3.5, 0.50) (4, 0) (5, 0);
+    TERM timeDevourer := (3, 0) (3.5, 0.50) (4, 1) (5, 1);
+END_FUZZIFY
+
+DEFUZZIFY urgencyLevel
+    TERM leaveItOver := (0, 1) (0.5, 0.50) (1, 0);
+    TERM worthConsidering := (0, 0) (0.5, 0.50) (1, 1) (2, 1) (2.5, 0.50) (3, 0);
+    TERM urgent := (2, 0) (2.5, 0.50) (3, 1);
+    METHOD : COG;
+    DEFAULT := 1;
+END_DEFUZZIFY
+
+RULEBLOCK No_1
+    AND : MIN;
+    OR : MAX;
+    ACT : MIN;
+    RULE 0 : IF timeToDeadline IS almostNoTime THEN urgencyLevel IS urgent;
+    RULE 1 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS hard) OR (timeToDeadline IS plentyOfTime AND timeConsumption IS timeDevourer) THEN urgencyLevel IS worthConsidering;
+    RULE 2 : IF difficultyLevel IS hard AND timeConsumption IS timeDevourer THEN urgencyLevel IS urgent;
+    RULE 3 : IF timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS fast THEN urgencyLevel IS worthConsidering;
+    RULE 4 : IF (timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS fast) THEN urgencyLevel IS leaveItOver;
+    RULE 5 : IF (timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS fast) OR (timeToDeadline IS plentyOfTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile) THEN urgencyLevel IS leaveItOver;
+    RULE 6 : IF (timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS fast) OR (timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile) THEN urgencyLevel IS worthConsidering;
+    RULE 7 : IF timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS takesAWhile THEN urgencyLevel IS leaveItOver;
+    RULE 8 : IF timeToDeadline IS plentyOfTime AND difficultyLevel IS moderate AND timeConsumption IS takesAWhile THEN urgencyLevel IS worthConsidering;
+    RULE 9 : IF (timeToDeadline IS someTime AND difficultyLevel IS hard AND timeConsumption IS takesAWhile) OR (timeToDeadline IS someTime AND difficultyLevel IS easy AND timeConsumption IS timeDevourer) THEN urgencyLevel IS urgent;
+    RULE 10 : IF timeToDeadline IS someTime AND difficultyLevel IS moderate AND timeConsumption IS timeDevourer THEN urgencyLevel IS worthConsidering;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

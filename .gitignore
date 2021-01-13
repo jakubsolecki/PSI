@@ -32,4 +32,5 @@ target/
 gradlew*
 
 *.mp4
-jakub-solecki-fuzzylogic-tasks_scheduler/
+
+venv/
