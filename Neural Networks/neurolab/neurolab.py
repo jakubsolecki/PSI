@@ -47,9 +47,7 @@ def process_input(x):
 # TODO: zastap None, dokoncz implementacje funkcji L (entropii krzyzowej)
 @tf.function
 def cross_entropy(predicted_labels, labels):
-    y = tf.math.log(labels/predicted_labels) # TODO: zaimplementuj mnie, pieknie prosze!
-    for i in range(len(y)):
-        y[i] = y[i]*tf.one_hot
+    y = tf.math.multiply(tf.one_hot(labels, 10), tf.math.log(predicted_labels)) # TODO: DONE
     # tu zliczamy suma dla kazdego przykladu treningowego
     # pamietaj, ze poniewaz bierzemy pod uwage tylko jedno wyjscie, to powinna byc to suma pewnej wartosci i samych zer
     y = -tf.reduce_sum(y, axis=[1])
@@ -175,7 +173,7 @@ class TestChapterOne(unittest.TestCase):
             tfds.show_examples(self.ds_train, self.ds_info)
             plt.show()
             plt.clf()
-        # TODO: uruchom test, poczekaj na pobranie sie zbioru, sprawdz co zawieraja jego przykladowe elementy
+        # TODO: DONE
 
     def test_exercise_one(self):
         # wykonamy nasza pierwsza (jednowarstwowa) siec neuronowa!
@@ -191,7 +189,7 @@ class TestChapterOne(unittest.TestCase):
         @tf.function
         def linear(x):
             # tutaj wykonujemy odpowiednie mnozenie przez wagi i przesuniecie o bias
-            y = x @ w + b  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = x @ w + b  # TODO: DONE
             return y
 
         # to jest wlasciwa funkcja definiujaca kolejne operacje wykonywane przez nasza (plytka) siec neuronowa
@@ -200,7 +198,7 @@ class TestChapterOne(unittest.TestCase):
             y = process_input(x)
             y = linear(y)
             # tutaj obliczamy aktywacje wyjscia z uzyciem tzw. miekkiego maksimum
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.softmax(y)  # TODO: DONE
             return y
 
         self.evaluate_model(
