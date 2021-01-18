@@ -224,7 +224,7 @@ class TestChapterOne(unittest.TestCase):
         # nadal liniowe mnozenie przez wagi, ale tym razem funkcja jest wielokrotnego uzytku
         @tf.function
         def linear(x, w, b):
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = x @ w + b  # TODO: zaimplementuj mnie, pieknie prosze!
             return y
 
         # TODO: tym razem musimy przepuscic nasze dane przez dwie warstwy - wyjscie jednej bedzie wejsciem do kolejnej
@@ -233,19 +233,19 @@ class TestChapterOne(unittest.TestCase):
         def model(x):
             y = process_input(x)
             # tutaj przepuszczamy przez pierwsza warstwe
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w1, b1)  # TODO: zaimplementuj mnie, pieknie prosze!
             # i jej aktywacje (pamietaj, by uzyc wlasciwej!)
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.relu(y)  # TODO: zaimplementuj mnie, pieknie prosze!
             # tutaj przepuszczamy przez warstwe druga
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w2, b2)  # TODO: zaimplementuj mnie, pieknie prosze!
             # i aktywacje wyjsciowa (pamietaj, by uzyc wlasciwej!)
-            y = None  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.softmax(y)  # TODO: zaimplementuj mnie, pieknie prosze!
             return y
 
         # TODO: wartosci jakich trzeba optymalizowac tym razem? uzupelnij odpowiedni parametr
         self.evaluate_model(
             model=model,
-            trainable_variables=None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            trainable_variables=[w1, b1, w2, b2],  # TODO: zaimplementuj mnie, pieknie prosze!
             visualised_weights=w1,
             batch_size=100,
             epochs_no=5,
