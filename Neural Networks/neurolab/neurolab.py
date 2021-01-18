@@ -372,13 +372,13 @@ class TestChapterThree(unittest.TestCase):
         # podejrzenie tego z ilu i jakich warstw sie sklada
         model.summary()
         # TODO: odpowiedz, o ile wieksza jest ta siec od wytrenowanej przez nas?
-
+        # TODO: odpowiadam: 1.8 razy
         # otworzmy przykladowe zdjecie i dostosujemy jego rozmiar i zakres wartosci do wejscia sieci
         # TODO: zastap None ponizej zmieniajac rozmiar na taki, jaki przyjmuje wejscie sieci (skorzystaj z podsumowania)
         image_path = 'nosacz.jpg'
         image = tf.keras.preprocessing.image.load_img(
             image_path,
-            target_size=None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            target_size=(224, 224),  # TODO: zaimplementuj mnie, pieknie prosze!
         )
         # kolejne linie dodatkowo dostosowuja obraz pod dana siec
         x = tf.keras.preprocessing.image.img_to_array(image)
@@ -406,3 +406,5 @@ class TestChapterThree(unittest.TestCase):
             plt.show()
             plt.clf()
         # TODO: podejrzyj aktywacje w kolejnych warstwach; czym roznia sie te w poczatkowych od tych w koncowych?
+        # TODO: odpowiadam: pierwsze warstwy wykrywają proste wzory np. linie czy kolory, a w kolejnych bardziej złożone
+        # TODO: byty, np kształty
