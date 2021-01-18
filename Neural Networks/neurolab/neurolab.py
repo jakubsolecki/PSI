@@ -327,20 +327,20 @@ class TestChapterTwo(unittest.TestCase):
             tf.keras.layers.Flatten(),
             # TODO: zastap None uzywajac tf.keras.layers.Dense, pamietaj o odpowiednim rozmiarze wyjsciowym i aktywacji!
             # pierwsza prawdziwa warstwa neuronow
-            None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            tf.keras.layers.Dense(100, activation='relu'),  # TODO: zaimplementuj mnie, pieknie prosze!
             # TODO: zastap None (analogicznie), pamietaj o wlasciwych rozmiarach i aktywacji!
             # koncowa warstwa neuronow
-            None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            tf.keras.layers.Dense(10, activation='softmax'),  # TODO: zaimplementuj mnie, pieknie prosze!
         ])
         # teraz kompilujemy nasz zdefiniowany wczesniej model
         model.compile(
             # tu podajemy czym jest funkcja loss
             # TODO: zastap None wybierajac wlasciwy wariant z tf.keras.losses
-            loss=None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            loss=tf.keras.losses.CategoricalCrossentropy(),  # TODO: zaimplementuj mnie, pieknie prosze!
             # a tu podajemy jak ja optymalizowac
             # TODO: zastap None instancja wlasciwego silnika z tf.keras.optimizers (SGD = Stochastic Gradient Descent),
             # TODO: (c.d.) pamietaj o ustaleniu wartosci parametru learning rate (lr)
-            optimizer=None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            optimizer=tf.keras.optimizers.SGD(0.1),  # TODO: zaimplementuj mnie, pieknie prosze!
             # informujemy, by w trakcie pracy zbierac informacje o uzyskanej skutecznosci
             metrics=['accuracy']
         )
