@@ -256,24 +256,34 @@ class TestChapterOne(unittest.TestCase):
         # TODO: rozwiaz problem z poczatkowymi aktywacjami funkcji ReLU
         # zmien poczatkowe wartosci wag na losowe z odchyleniem standardowym od -0.1 do 0.1,
         # a biasy po prostu na stala wartosc rowna 0.1
-        w1 = tf.Variable(None)  # TODO: zaimplementuj mnie, pieknie prosze!
-        b1 = tf.Variable(None)  # TODO: zaimplementuj mnie, pieknie prosze!
-        w2 = tf.Variable(None)  # TODO: zaimplementuj mnie, pieknie prosze!
-        b2 = tf.Variable(None)  # TODO: zaimplementuj mnie, pieknie prosze!
+        w1 = tf.Variable(tf.random.truncated_normal([784, 100], stddev=0.1))  # TODO: zaimplementuj mnie, pieknie prosze!
+        b1 = tf.Variable(tf.ones([100])*0.1)  # TODO: zaimplementuj mnie, pieknie prosze!
+        w2 = tf.Variable(tf.random.truncated_normal([100, 10], stddev=0.1))  # TODO: zaimplementuj mnie, pieknie prosze!
+        b2 = tf.Variable(tf.ones([10])*0.1)  # TODO: zaimplementuj mnie, pieknie prosze!
 
         # TODO: pozostale elementy po prostu uzupelnij tak jak w cwiczeniu drugim (metoda copy-paste)!
 
         @tf.function
         def linear(x, w, b):
-            pass  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = x @ w + b  # TODO: zaimplementuj mnie, pieknie prosze!
+            return y
 
         @tf.function
         def model(x):
-            pass  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = process_input(x)
+            # tutaj przepuszczamy przez pierwsza warstwe
+            y = linear(y, w1, b1)  # TODO: zaimplementuj mnie, pieknie prosze!
+            # i jej aktywacje (pamietaj, by uzyc wlasciwej!)
+            y = tf.nn.relu(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            # tutaj przepuszczamy przez warstwe druga
+            y = linear(y, w2, b2)  # TODO: zaimplementuj mnie, pieknie prosze!
+            # i aktywacje wyjsciowa (pamietaj, by uzyc wlasciwej!)
+            y = tf.nn.softmax(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            return y
 
         self.evaluate_model(
             model=model,
-            trainable_variables=None,  # TODO: zaimplementuj mnie, pieknie prosze!
+            trainable_variables=[w1, b1, w2, b2],  # TODO: zaimplementuj mnie, pieknie prosze!
             visualised_weights=w1,
             batch_size=100,
             epochs_no=25,
