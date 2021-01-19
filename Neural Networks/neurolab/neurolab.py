@@ -224,7 +224,7 @@ class TestChapterOne(unittest.TestCase):
         # nadal liniowe mnozenie przez wagi, ale tym razem funkcja jest wielokrotnego uzytku
         @tf.function
         def linear(x, w, b):
-            y = x @ w + b  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = x @ w + b  # TODO: DONE
             return y
 
         # TODO: tym razem musimy przepuscic nasze dane przez dwie warstwy - wyjscie jednej bedzie wejsciem do kolejnej
@@ -233,19 +233,19 @@ class TestChapterOne(unittest.TestCase):
         def model(x):
             y = process_input(x)
             # tutaj przepuszczamy przez pierwsza warstwe
-            y = linear(y, w1, b1)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w1, b1)  # TODO: DONE
             # i jej aktywacje (pamietaj, by uzyc wlasciwej!)
-            y = tf.nn.relu(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.relu(y)  # TODO: DONE
             # tutaj przepuszczamy przez warstwe druga
-            y = linear(y, w2, b2)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w2, b2)  # TODO: DONE
             # i aktywacje wyjsciowa (pamietaj, by uzyc wlasciwej!)
-            y = tf.nn.softmax(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.softmax(y)  # TODO: DONE
             return y
 
         # TODO: wartosci jakich trzeba optymalizowac tym razem? uzupelnij odpowiedni parametr
         self.evaluate_model(
             model=model,
-            trainable_variables=[w1, b1, w2, b2],  # TODO: zaimplementuj mnie, pieknie prosze!
+            trainable_variables=[w1, b1, w2, b2],  # TODO: DONE
             visualised_weights=w1,
             batch_size=100,
             epochs_no=5,
@@ -256,34 +256,34 @@ class TestChapterOne(unittest.TestCase):
         # TODO: rozwiaz problem z poczatkowymi aktywacjami funkcji ReLU
         # zmien poczatkowe wartosci wag na losowe z odchyleniem standardowym od -0.1 do 0.1,
         # a biasy po prostu na stala wartosc rowna 0.1
-        w1 = tf.Variable(tf.random.truncated_normal([784, 100], stddev=0.1))  # TODO: zaimplementuj mnie, pieknie prosze!
+        w1 = tf.Variable(tf.random.truncated_normal([784, 100], stddev=0.1))  # TODO: DONE
         b1 = tf.Variable(tf.ones([100])*0.1)  # TODO: zaimplementuj mnie, pieknie prosze!
-        w2 = tf.Variable(tf.random.truncated_normal([100, 10], stddev=0.1))  # TODO: zaimplementuj mnie, pieknie prosze!
-        b2 = tf.Variable(tf.ones([10])*0.1)  # TODO: zaimplementuj mnie, pieknie prosze!
+        w2 = tf.Variable(tf.random.truncated_normal([100, 10], stddev=0.1))  # TODO: DONE
+        b2 = tf.Variable(tf.ones([10])*0.1)  # TODO: DONE
 
         # TODO: pozostale elementy po prostu uzupelnij tak jak w cwiczeniu drugim (metoda copy-paste)!
 
         @tf.function
         def linear(x, w, b):
-            y = x @ w + b  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = x @ w + b  # TODO: DONE
             return y
 
         @tf.function
         def model(x):
             y = process_input(x)
             # tutaj przepuszczamy przez pierwsza warstwe
-            y = linear(y, w1, b1)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w1, b1)  # TODO: DONE
             # i jej aktywacje (pamietaj, by uzyc wlasciwej!)
-            y = tf.nn.relu(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.relu(y)  # TODO: DONE
             # tutaj przepuszczamy przez warstwe druga
-            y = linear(y, w2, b2)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = linear(y, w2, b2)  # TODO: DONE
             # i aktywacje wyjsciowa (pamietaj, by uzyc wlasciwej!)
-            y = tf.nn.softmax(y)  # TODO: zaimplementuj mnie, pieknie prosze!
+            y = tf.nn.softmax(y)  # TODO: DONE
             return y
 
         self.evaluate_model(
             model=model,
-            trainable_variables=[w1, b1, w2, b2],  # TODO: zaimplementuj mnie, pieknie prosze!
+            trainable_variables=[w1, b1, w2, b2],  # TODO: DONE
             visualised_weights=w1,
             batch_size=100,
             epochs_no=25,
@@ -327,20 +327,20 @@ class TestChapterTwo(unittest.TestCase):
             tf.keras.layers.Flatten(),
             # TODO: zastap None uzywajac tf.keras.layers.Dense, pamietaj o odpowiednim rozmiarze wyjsciowym i aktywacji!
             # pierwsza prawdziwa warstwa neuronow
-            tf.keras.layers.Dense(100, activation='relu'),  # TODO: zaimplementuj mnie, pieknie prosze!
+            tf.keras.layers.Dense(100, activation='relu'),  # TODO: DONE
             # TODO: zastap None (analogicznie), pamietaj o wlasciwych rozmiarach i aktywacji!
             # koncowa warstwa neuronow
-            tf.keras.layers.Dense(10, activation='softmax'),  # TODO: zaimplementuj mnie, pieknie prosze!
+            tf.keras.layers.Dense(10, activation='softmax'),  # TODO: DONE
         ])
         # teraz kompilujemy nasz zdefiniowany wczesniej model
         model.compile(
             # tu podajemy czym jest funkcja loss
             # TODO: zastap None wybierajac wlasciwy wariant z tf.keras.losses
-            loss=tf.keras.losses.CategoricalCrossentropy(),  # TODO: zaimplementuj mnie, pieknie prosze!
+            loss=tf.keras.losses.CategoricalCrossentropy(),  # TODO: DONE
             # a tu podajemy jak ja optymalizowac
             # TODO: zastap None instancja wlasciwego silnika z tf.keras.optimizers (SGD = Stochastic Gradient Descent),
             # TODO: (c.d.) pamietaj o ustaleniu wartosci parametru learning rate (lr)
-            optimizer=tf.keras.optimizers.SGD(0.1),  # TODO: zaimplementuj mnie, pieknie prosze!
+            optimizer=tf.keras.optimizers.SGD(0.1),  # TODO: DONE
             # informujemy, by w trakcie pracy zbierac informacje o uzyskanej skutecznosci
             metrics=['accuracy']
         )
@@ -378,7 +378,7 @@ class TestChapterThree(unittest.TestCase):
         image_path = 'nosacz.jpg'
         image = tf.keras.preprocessing.image.load_img(
             image_path,
-            target_size=(224, 224),  # TODO: zaimplementuj mnie, pieknie prosze!
+            target_size=(224, 224),  # TODO: DONE
         )
         # kolejne linie dodatkowo dostosowuja obraz pod dana siec
         x = tf.keras.preprocessing.image.img_to_array(image)
@@ -407,4 +407,4 @@ class TestChapterThree(unittest.TestCase):
             plt.clf()
         # TODO: podejrzyj aktywacje w kolejnych warstwach; czym roznia sie te w poczatkowych od tych w koncowych?
         # TODO: odpowiadam: pierwsze warstwy wykrywają proste wzory np. linie czy kolory, a w kolejnych bardziej złożone
-        # TODO: byty, np kształty
+        # TODO: byty, np. kształty
