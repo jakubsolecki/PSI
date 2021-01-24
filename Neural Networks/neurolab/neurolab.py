@@ -392,6 +392,7 @@ class TestChapterThree(unittest.TestCase):
         print('Predicted class:', decoded_predictions)
         # TODO: czy skonczylo sie sukcesem?
         # TODO: pobaw sie z innymi zdjeciami z Internetu - jak radzi sobie siec? kiedy sie myli? w jaki sposob?
+        # https://www.jantzen-audio.com/wp-content/uploads/2013/04/wire-air-cored-coil-450.jpg
         # TODO: wstawilem zdj cewki i w sumie to rozpoznało ją na 25% jako wiadro
         # TODO: (c.d.) pamietaj, ze siec rozumie tylko wymienione w ponizszym JSONIE klasy:
         # https://github.com/raghakot/keras-vis/blob/master/resources/imagenet_class_index.json
