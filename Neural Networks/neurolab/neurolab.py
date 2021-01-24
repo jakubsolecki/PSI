@@ -375,7 +375,7 @@ class TestChapterThree(unittest.TestCase):
         # TODO: odpowiadam: 1.8 razy
         # otworzmy przykladowe zdjecie i dostosujemy jego rozmiar i zakres wartosci do wejscia sieci
         # TODO: zastap None ponizej zmieniajac rozmiar na taki, jaki przyjmuje wejscie sieci (skorzystaj z podsumowania)
-        image_path = 'nosacz.jpg'
+        image_path = 'coil.jpg'
         image = tf.keras.preprocessing.image.load_img(
             image_path,
             target_size=(224, 224),  # TODO: DONE
@@ -392,6 +392,7 @@ class TestChapterThree(unittest.TestCase):
         print('Predicted class:', decoded_predictions)
         # TODO: czy skonczylo sie sukcesem?
         # TODO: pobaw sie z innymi zdjeciami z Internetu - jak radzi sobie siec? kiedy sie myli? w jaki sposob?
+        # TODO: wstawilem zdj cewki i w sumie to rozpoznało ją na 25% jako wiadro
         # TODO: (c.d.) pamietaj, ze siec rozumie tylko wymienione w ponizszym JSONIE klasy:
         # https://github.com/raghakot/keras-vis/blob/master/resources/imagenet_class_index.json
 
